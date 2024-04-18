@@ -1,0 +1,41 @@
+<% include ./partials/header.ejs %>
+    <div class="w-full min-h-screen bg-zinc-900 px-4 py-5">
+        <div class="border-2 border-zinc-800 flex items-center justify-between px-2 py-1 rounded-md">
+        <i class="text-white ri-search-line"></i>
+        <input class="inptup ml-1 w-full bg-zinc-900 outline-none text-zinc-400" type="text" placeholder="search username">
+        </div>
+        <div class="users">
+        
+
+        </div>
+    </div>
+
+    <script>
+        var inp = document.querySelector('.inptup');
+
+        inp.addEventListener('input', function(){
+            if(inp.value !== ' '){
+                fetch(`/search/${inp.value}`)
+                .then(rew => rew.json())
+                .then(result => {
+                    let structure = '';
+                    result.forEach(function(elem){
+                        structure +=`<a href="/profile/${elem.username}" class="outline-none">
+                                        <div class="text-white flex items-center gap-2 mt-5">
+                                            <div class="image w-[11vw] h-[11vw] rounded-full bg-sky-100 overflow-hidden">
+                                                <img class="w-full h-full object-cover" src="/images/uploads/${elem.profileImg}" alt="">
+                                            </div>
+                                            <div class="text">
+                                                <h3>${elem.username}</h3>
+                                                <h4 class="text-xs opacity-30 leading-none">${elem.name}</h4>
+                                            </div>
+                                        </div>            
+                                    </a>`                
+                    });
+                    document.querySelector('.users').innerHTML = structure;
+                })
+            }
+        })
+    </script>
+
+<% include ./partials/footer.ejs %>

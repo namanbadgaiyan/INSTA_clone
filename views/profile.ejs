@@ -1,0 +1,51 @@
+<% include ./partials/header.ejs %>
+  <div class="w-full min-h-screen py-5 text-white bg-zinc-900">
+      <div class="flex items-center justify-between px-4 nav">
+        <h3 class="text-lg"><%= user.username %></h3>
+        <div class="flex gap-5 icons">
+          <a href="/upload"><i class="text-[1.4rem] ri-add-box-line"></i></a>
+          <i class="text-[1.4rem] ri-menu-line"></i>
+        </div>
+      </div>
+      <div class="flex justify-between items-center pl-6 pr-[12vw] mt-8">
+        <div class="w-[19vw] h-[19vw] bg-sky-100 rounded-full overflow-hidden">
+          <img class="object-cover w-full h-full" src="/images/uploads/<%= user.profileImg %>" alt="">
+        </div>
+        <div class="flex items-center justify-between gap-5 stats">
+          <div class="flex flex-col items-center justify-center">
+            <h3><%= user.posts.length %></h3>
+            <h4>Posts</h4>
+          </div>
+          <div class="flex flex-col items-center justify-center">
+            <h3><%= user.followers.length %></h3>
+            <h4>Followers</h4>
+          </div>
+          <div class="flex flex-col items-center justify-center">
+            <h3><%= user.following.length %></h3>
+            <h4>Following</h4>
+          </div>
+        </div>
+      </div>
+      <div class="px-6 mt-5 dets">
+        <h3 class="mb-1 text-lg"><%= user.name %></h3>
+        <p class="text-xs tracking-tight opacity-50"><%= user.bio ?? "You have not set anything yet, (click edit profile to set)" %></p>
+      </div>
+      <div class="px-6 mt-5">
+        <a class="px-3 py-2 text-xs rounded-md bg-zinc-800" href="/edit">Edit Profile</a>
+      </div>
+      <div class="posts w-full flex gap-1  mt-5 flex-wrap  border-t-[0.3px] border-slate-300  ">
+        <% if(user.posts.length>0){ %>
+          <% user.posts.reverse().forEach(function(post){ %>
+            <div class="post w-[32.5%] h-32 bg-sky-100">
+              <img class="object-cover w-full h-full" src="/images/uploads/<%= post.picture %>" alt="">
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div class="w-full flex flex-col justify-center items-center min-h-[20vh]">
+            <h4 class="text-[5vh]">📸</h4>
+            <small class="opacity-90">no posts yet.</small>
+          </div>
+        <% } %>
+      </div>
+  </div>
+<% include ./partials/footer.ejs %>
