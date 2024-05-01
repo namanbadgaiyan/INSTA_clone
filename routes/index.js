@@ -68,6 +68,13 @@ router.get('/profile/:user', isLoggedIn, async function(req, res) {
   res.render('userprofile', {footer: true, userprofile, user});
 });
 
+//storyfetching
+router.get('/story/:sortyid',async (req, res) => {
+  const user = await userModel.findOne({_id: req.params.sortyid}).populate("stories")
+  res.json(user)
+  
+})
+
 router.get('/follow/:userid', isLoggedIn, async function(req, res) {
   let followKarneWaala = await userModel
   .findOne({username: req.session.passport.user})
@@ -161,6 +168,35 @@ router.post('/upload', isLoggedIn, upload.single('image'), async function(req, r
 
 // POST
 
+
+
+
+
+//story like
+router.get('/storylike/:storyid', async (req, res) => {
+  const story = await storyModel.findOne({_id: req.params.storyid}).populate('likes')
+  const user = await userModel.findOne({username: req.session.passport.user})
+
+  if(story.likes.indexOf(user._id) === -1 ){
+    story.likes.push(user._id);
+  }else{
+    return
+  }
+  await story.save();
+
+  res.json(story);
+})
+
+
+
+
+
+
+
+
+
+
+
 router.post('/register', function(req, res) {
   const user = new userModel({
     username: req.body.username,
@@ -196,5 +232,9 @@ function isLoggedIn(req, res, next){
     res.redirect("/login");
   }
 }
+
+
+
+
 
 module.exports = router;
