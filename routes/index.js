@@ -174,27 +174,21 @@ router.post('/upload', isLoggedIn, upload.single('image'), async function(req, r
 
 //story like
 router.get('/storylike/:storyid', async (req, res) => {
-  const story = await storyModel.findOne({_id: req.params.storyid}).populate('likes')
+  const story = await storyModel.findOne({_id: req.params.storyid})
   const user = await userModel.findOne({username: req.session.passport.user})
 
   if(story.likes.indexOf(user._id) === -1 ){
     story.likes.push(user._id);
   }else{
-    return
+    story.likes.splice(story.likes.indexOf(user._id), 1);
   }
+
   await story.save();
 
-  res.json(story);
+  const storynow = await storyModel.findOne({_id: req.params.storyid}).populate('likes')
+
+  res.json(storynow);
 })
-
-
-
-
-
-
-
-
-
 
 
 router.post('/register', function(req, res) {
@@ -224,6 +218,33 @@ router.get("/logout", function(req, res){
   });
 })
 
+
+router.get('/saveposts/:savepostid',isLoggedIn,async function(req, res) {
+  const user = await userModel.findOne({username: req.session.passport.user});
+  if(user.saved.includes(req.params.savepostid)){
+    user.saved.splice(user.saved.indexOf(req.params.savepostid), 1);
+  }
+  else{
+    user.saved.push(req.params.savepostid)
+  }
+    await user.save();
+  res.json(user)
+});
+
+router.get('/saveposts',isLoggedIn,async function(req, res) {
+  const user = await userModel.findOne({username: req.session.passport.user}).populate('saved');
+  const post = await user.saved.map((i) => {
+    return i.user
+  })
+  const alluser = post.forEach(async element => {
+
+    await userModel.findOne({_id:element})
+  })
+  console.log(alluser);
+  console.log(post);
+  // console.log(user);
+  res.render('saved.ejs',{footer:true, user})
+})
 function isLoggedIn(req, res, next){
   if(req.isAuthenticated()){
     return next();

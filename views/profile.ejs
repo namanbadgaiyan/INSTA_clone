@@ -6,6 +6,12 @@
           <a href="/upload"><i class="text-[1.4rem] ri-add-box-line"></i></a>
           <i class="text-[1.4rem] ri-menu-line"></i>
         </div>
+        <div class="menudiv w-[25vw] h-[12vh]  bg-zinc-800 rounded-lg border-[0.5px] border-zinc-300 
+          absolute top-[7vh] right-[0.5vh] flex items-center justify-center flex-col overflow-hidden translate-x-[15vh]">
+
+          <a href="/logout" class="text-[2vh]  text-center w-full  border-b-[0.5px] border-zinc-400 py-3">Logout</a>
+          <a href="/savedposts" class="text-[2vh] text-center py-3">Saved</a>
+        </div>
       </div>
       <div class="flex justify-between items-center pl-6 pr-[12vw] mt-8">
         <div class="w-[19vw] h-[19vw] bg-sky-100 rounded-full overflow-hidden">
@@ -48,4 +54,23 @@
         <% } %>
       </div>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    document.querySelector(".ri-menu-line").addEventListener("click", function(){
+      var menudiv = document.querySelector(".menudiv")
+      gsap.to(menudiv,{
+        x:-10,
+        duration:0.4,
+      })
+      menudiv.addEventListener("click", function(){
+        gsap.to(menudiv,{
+          x:110,
+          duration:0.4, 
+          // delay:1
+        })
+    })
+    });
+  </script>
+
+  
 <% include ./partials/footer.ejs %>
