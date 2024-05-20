@@ -232,18 +232,16 @@ router.get('/saveposts/:savepostid',isLoggedIn,async function(req, res) {
 });
 
 router.get('/saveposts',isLoggedIn,async function(req, res) {
-  const user = await userModel.findOne({username: req.session.passport.user}).populate('saved');
-  const post = await user.saved.map((i) => {
-    return i.user
-  })
-  const alluser = post.forEach(async element => {
+  const user = await userModel.findOne({username: req.session.passport.user}).
+  populate( {path:'saved',
+  populate:{path:"user"} }).exec();
 
-    await userModel.findOne({_id:element})
-  })
-  console.log(alluser);
-  console.log(post);
-  // console.log(user);
-  res.render('saved.ejs',{footer:true, user})
+  const savedPostDets  = user.saved.map((post) => (post))
+  console.log(savedPostDets);
+
+
+
+  res.render('saved.ejs',{footer:true, user, savedPostDets })
 })
 function isLoggedIn(req, res, next){
   if(req.isAuthenticated()){

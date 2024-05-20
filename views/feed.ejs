@@ -212,8 +212,6 @@
           }
       })
 
-
-
       // ------------------------story ------------------------
 
 function displayStory() {   
@@ -318,7 +316,28 @@ document.querySelector('.strylike').addEventListener('click', function(dets){
   })
 })
 
-// ------------------------------------------------------
+// --------------------------saved----------------------------
+document.querySelector('.posts').addEventListener('click', function(e){
+
+  console.log(e.target.id)
+  if (e.target.classList.contains('saved')) {
+    if (e.target.classList.contains('ri-bookmark-line')) {
+
+      e.target.classList.remove('ri-bookmark-line');
+      e.target.classList.add('ri-bookmark-fill','text-white');
+    }
+    else{
+      e.target.classList.add('ri-bookmark-line');
+        e.target.classList.remove('ri-bookmark-fill','text-white');
+    }
+
+    fetch(`/saveposts/${e.target.id}`)
+    .then(raw => raw.json())
+    .then(Response => {
+      console.log(response);
+    })
+  }
+});
 // ------------------------------------------------------
       
   </script>
