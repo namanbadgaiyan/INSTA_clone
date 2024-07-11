@@ -318,8 +318,6 @@ document.querySelector('.strylike').addEventListener('click', function(dets){
 
 // --------------------------saved----------------------------
 document.querySelector('.posts').addEventListener('click', function(e){
-
-  console.log(e.target.id)
   if (e.target.classList.contains('saved')) {
     if (e.target.classList.contains('ri-bookmark-line')) {
 
@@ -331,9 +329,9 @@ document.querySelector('.posts').addEventListener('click', function(e){
         e.target.classList.remove('ri-bookmark-fill','text-white');
     }
 
-    fetch(`/saveposts/${e.target.id}`)
+    fetch(`/savedposts/${e.target.id}`)
     .then(raw => raw.json())
-    .then(Response => {
+    .then(response => {
       console.log(response);
     })
   }

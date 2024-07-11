@@ -219,7 +219,7 @@ router.get("/logout", function(req, res){
 })
 
 
-router.get('/saveposts/:savepostid',isLoggedIn,async function(req, res) {
+router.get('/savedposts/:savepostid',isLoggedIn,async function(req, res) {
   const user = await userModel.findOne({username: req.session.passport.user});
   if(user.saved.includes(req.params.savepostid)){
     user.saved.splice(user.saved.indexOf(req.params.savepostid), 1);
@@ -231,7 +231,7 @@ router.get('/saveposts/:savepostid',isLoggedIn,async function(req, res) {
   res.json(user)
 });
 
-router.get('/saveposts',isLoggedIn,async function(req, res) {
+router.get('/savedposts',isLoggedIn,async function(req, res) {
   const user = await userModel.findOne({username: req.session.passport.user}).
   populate( {path:'saved',
   populate:{path:"user"} }).exec();
